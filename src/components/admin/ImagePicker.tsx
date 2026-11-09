@@ -121,7 +121,7 @@ export function ImagePicker({ value, onChange }: { value: string; onChange: (v: 
       <div className="h-20 w-32 shrink-0 overflow-hidden rounded-lg border border-line bg-bg-2">
         {preview ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={preview} alt="预览" className="h-full w-full object-cover" />
+          <img src={preview} alt="预览" className="h-full w-full object-contain" />
         ) : (
           <div className="grid h-full place-items-center text-xs text-faint">无图片</div>
         )}
