@@ -1,0 +1,22 @@
+# Railway 部署配置 —— 连上 GitHub 仓库后，push main 即自动构建部署。
+#
+# 配套需要（在 Railway 面板配置，不写进仓库）：
+#   1) 同一个项目里加一个 PostgreSQL 服务
+#   2) 应用服务变量 DATABASE_URL = ${{Postgres.DATABASE_URL}}
+#   3) 应用服务变量 ADMIN_PASSWORD（至少 8 位，建议 16 位以上随机）
+#   4) 应用服务变量 SESSION_SECRET（openssl rand -hex 32）
+#
+# 不需要数据卷：内容、图片都存在 PostgreSQL 里。
+# 也不需要手动建表：首次访问 /api/health 或任意页面时会自动建表并写入初始内容。
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# /api/health 会顺带完成首次建表，返回 {"ok":true,"content":true}
+healthcheckPath = "/api/health"
+# 首次启动要建表 + 写初始内容，给足宽限
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
