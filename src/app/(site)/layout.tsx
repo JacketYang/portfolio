@@ -16,6 +16,9 @@ export async function generateMetadata(): Promise<Metadata> {
     ...(base ? { metadataBase: new URL(base) } : {}),
     title: { default: site.title, template: `%s · ${profile.name}` },
     description: site.description,
+    icons: site.icon
+      ? { icon: [{ url: site.icon }], apple: [{ url: site.icon }] }
+      : { icon: [{ url: "/icon", type: "image/svg+xml" }] },
     openGraph: {
       title: site.title,
       description: site.description,
@@ -47,7 +50,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
         >
           跳到正文
         </a>
-        <Header name={profile.name} items={nav} />
+        <Header name={profile.name} logo={profile.logo} items={nav} />
         <main id="main" className="flex-1">
           {children}
         </main>

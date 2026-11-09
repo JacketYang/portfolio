@@ -4,13 +4,16 @@ import { useState } from "react";
 import { api } from "./client";
 import { SETTINGS_CONFIG } from "./config";
 import { withContactQr } from "./contactQr";
+import { withProfileLogo } from "./profileLogo";
+import { withSiteIcon } from "./siteIcon";
 import { FormFields, cleanValue } from "./FormFields";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export function SettingsEditor({ doc, initial }: { doc: "profile" | "site"; initial: any }) {
   const cfg = SETTINGS_CONFIG[doc];
-  const fields = doc === "profile" ? withContactQr(cfg.fields) : cfg.fields;
+  const fields =
+    doc === "profile" ? withProfileLogo(withContactQr(cfg.fields)) : withSiteIcon(cfg.fields);
   const [data, setData] = useState<any>(initial);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);

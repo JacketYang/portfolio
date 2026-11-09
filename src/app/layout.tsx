@@ -12,6 +12,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "个人项目展厅",
   description: "个人项目展厅与数字档案馆",
+  icons: { icon: [{ url: "/icon", type: "image/svg+xml" }] },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
