@@ -1,0 +1,341 @@
+@import "tailwindcss";
+
+/* ============================================================
+   设计令牌（详见 docs/DESIGN.md）
+   主色可在后台「站点设置」里改，--accent 由前台布局注入覆盖。
+   ============================================================ */
+:root {
+  --accent: #5eead4;
+  --accent-2: #818cf8;
+}
+
+@theme inline {
+  --color-bg: #070a12;
+  --color-bg-2: #0b101b;
+  --color-surface: rgb(255 255 255 / 0.04);
+  --color-surface-2: rgb(255 255 255 / 0.07);
+  --color-line: rgb(255 255 255 / 0.09);
+  --color-line-strong: rgb(255 255 255 / 0.16);
+  --color-fg: #e8ecf4;
+  --color-muted: #a1abc0;
+  --color-faint: #717b93;
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-danger: #f87171;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+/* ---------- 基础 ---------- */
+html {
+  background: var(--color-bg);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--color-fg);
+  background: var(--color-bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection {
+  background: color-mix(in oklab, var(--accent) 35%, transparent);
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* 组件类放进 components 层：保证 Tailwind 工具类（如 max-w-3xl、text-accent）能覆盖它们 */
+@layer components {
+/* ---------- 布局 ---------- */
+.container-page {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 640px) {
+  .container-page {
+    padding-inline: 2rem;
+  }
+}
+.section {
+  padding-block: clamp(3.25rem, 7vw, 6rem);
+}
+
+/* ---------- 文字 ---------- */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.h-display {
+  font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.h-section {
+  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+.text-gradient {
+  background: linear-gradient(95deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- 表面 ---------- */
+.card {
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  border-radius: 1rem;
+}
+.card-hover {
+  transition:
+    border-color 250ms ease,
+    transform 250ms ease,
+    background-color 250ms ease;
+}
+.card-hover:hover {
+  border-color: color-mix(in oklab, var(--accent) 45%, transparent);
+  background: var(--color-surface-2);
+  transform: translateY(-2px);
+}
+.glass {
+  border: 1px solid var(--color-line);
+  background: rgb(255 255 255 / 0.04);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-radius: 1.25rem;
+}
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 100%);
+}
+.glow {
+  background:
+    radial-gradient(40rem 24rem at 15% -10%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 70%),
+    radial-gradient(36rem 22rem at 90% 0%, color-mix(in oklab, var(--accent-2) 16%, transparent), transparent 70%);
+}
+
+/* ---------- 标签 / 按钮 / 表单 ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--color-muted);
+}
+.chip-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 999px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-line-strong);
+  padding: 0.55rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 550;
+  line-height: 1.4;
+  color: var(--color-fg);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease,
+    opacity 200ms ease;
+}
+.btn:hover {
+  background: var(--color-surface-2);
+  border-color: color-mix(in oklab, var(--accent) 50%, transparent);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-primary {
+  border-color: transparent;
+  color: #04110e;
+  background: linear-gradient(95deg, var(--accent), color-mix(in oklab, var(--accent) 55%, var(--accent-2)));
+}
+.btn-primary:hover {
+  background: linear-gradient(95deg, var(--accent), var(--accent-2));
+  border-color: transparent;
+}
+.btn-danger {
+  color: var(--color-danger);
+  border-color: color-mix(in oklab, var(--color-danger) 40%, transparent);
+}
+.btn-danger:hover {
+  background: color-mix(in oklab, var(--color-danger) 14%, transparent);
+  border-color: var(--color-danger);
+}
+.btn-sm {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
+  border-radius: 0.6rem;
+}
+.input {
+  width: 100%;
+  border-radius: 0.7rem;
+  border: 1px solid var(--color-line-strong);
+  background: rgb(255 255 255 / 0.03);
+  padding: 0.55rem 0.8rem;
+  font-size: 0.9rem;
+  color: var(--color-fg);
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+.input::placeholder {
+  color: var(--color-faint);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgb(255 255 255 / 0.05);
+}
+select.input option {
+  background: #10151f;
+  color: var(--color-fg);
+}
+.label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: var(--color-muted);
+}
+.help {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--color-faint);
+}
+
+/* ---------- Markdown 正文 ---------- */
+.md > * + * {
+  margin-top: 0.85em;
+}
+.md p,
+.md li {
+  color: var(--color-muted);
+}
+.md strong {
+  color: var(--color-fg);
+  font-weight: 650;
+}
+.md ul,
+.md ol {
+  padding-left: 1.25rem;
+}
+.md ul {
+  list-style: disc;
+}
+.md ol {
+  list-style: decimal;
+}
+.md li + li {
+  margin-top: 0.35em;
+}
+.md li::marker {
+  color: var(--accent);
+}
+.md h4 {
+  color: var(--color-fg);
+  font-weight: 650;
+  font-size: 1.05em;
+}
+.md a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.md code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 0.1em 0.4em;
+  border-radius: 0.35rem;
+  background: rgb(255 255 255 / 0.08);
+  color: var(--color-fg);
+}
+.md blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+  color: var(--color-muted);
+}
+
+/* ---------- 简历打印页 ---------- */
+.paper {
+  background: #fff;
+  color: #1a1d24;
+}
+.paper .md p,
+.paper .md li {
+  color: #2b303b;
+}
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .paper {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+}

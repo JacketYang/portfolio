@@ -1,0 +1,26 @@
+// 使用方法：复制为项目根目录的 wrangler.jsonc，并替换所有 <...> 占位。详见 docs/DEPLOY.md 第 4 节。
+// 本站所有页面均为按需渲染，不需要 R2 / D1 / Durable Objects 等缓存绑定。
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "<你的Worker名称，例如 my-portfolio>",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-01-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": { "enabled": true },
+  "hyperdrive": [
+    {
+      // 绑定名称必须叫 HYPERDRIVE（src/db/index.ts 按这个名字查找）
+      "binding": "HYPERDRIVE",
+      "id": "<wrangler hyperdrive create 输出的 id>",
+      // 本地 preview 使用的连接串（可与线上相同）。不要提交含密码的真实连接串到公开仓库
+      "localConnectionString": "<postgresql://user:pass@host/db?sslmode=require>"
+    }
+  ]
+  // 密钥用命令设置，不要写在这里：
+  //   npx wrangler secret put ADMIN_PASSWORD
+  //   npx wrangler secret put SESSION_SECRET
+}

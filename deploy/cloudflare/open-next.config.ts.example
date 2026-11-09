@@ -1,0 +1,5 @@
+// 使用方法：复制为项目根目录的 open-next.config.ts（安装 @opennextjs/cloudflare 之后）。
+// 本站不使用 ISR / 增量缓存，因此不需要配置 R2 缓存。
+import { defineCloudflareConfig } from "@opennextjs/cloudflare";
+
+export default defineCloudflareConfig();
