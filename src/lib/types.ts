@@ -110,6 +110,8 @@ export type Profile = {
   intro: string;
   about: string;
   avatar: string;
+  /** 姓名旁边的小标志（类似网站 logo）。留空则用姓名首字。 */
+  logo: string;
   location: string;
   intention: string;
   experienceYears: string;
@@ -141,6 +143,8 @@ export type SiteSettings = {
   title: string;
   description: string;
   siteUrl: string;
+  /** 自定义网站图标地址；留空则按姓名首字 + 主题色自动生成。 */
+  icon: string;
   accent: string;
   footerText: string;
   icp: string;

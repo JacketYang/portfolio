@@ -197,6 +197,7 @@ export const profileSchema = z.object({
   intro: text(2000),
   about: text(8000),
   avatar: imgUrl,
+  logo: imgUrl,
   location: str(40),
   intention: str(120),
   experienceYears: str(20),
@@ -217,6 +218,7 @@ export const siteSchema = z.object({
     .max(200)
     .refine((v) => v === "" || /^https?:\/\/[^\s/]+\/?$/.test(v), "格式应为 https://example.com"),
   accent: hex,
+  icon: imgUrl,
   footerText: str(200),
   icp: str(80),
   showLog: z.boolean(),
