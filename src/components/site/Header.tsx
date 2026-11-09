@@ -5,21 +5,28 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/cn";
+import { safeImg } from "@/lib/safe";
 
 export type NavItem = { href: string; label: string };
 
-export function Header({ name, items }: { name: string; items: NavItem[] }) {
+export function Header({ name, logo, items }: { name: string; logo?: string; items: NavItem[] }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const mark = safeImg(logo ?? "");
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
     <header className="no-print sticky top-0 z-40 border-b border-line bg-bg/70 backdrop-blur-xl">
       <div className="container-page flex h-16 items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-accent to-accent-2 text-sm font-bold text-[#04110e]">
-            {name.slice(0, 1)}
-          </span>
+          {mark ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={mark} alt={name} className="h-8 w-8 shrink-0 rounded-lg object-contain" />
+          ) : (
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-accent to-accent-2 text-sm font-bold text-[#04110e]">
+              {[...name][0] ?? "P"}
+            </span>
+          )}
           <span className="text-sm font-semibold tracking-wide">{name}</span>
         </Link>
 
