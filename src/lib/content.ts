@@ -59,6 +59,7 @@ function mergeDoc<T extends object>(defaults: T, stored: unknown): T {
 
 function mask(c: Contact): string {
   const v = c.value;
+  if (!v) return "";
   if (!c.reveal) return v;
   if (c.type === "phone") return v.length >= 7 ? `${v.slice(0, 3)}****${v.slice(-4)}` : "****";
   if (c.type === "email") {
@@ -73,13 +74,15 @@ export function toPublicProfile(p: Profile): PublicProfile {
     ...p,
     contacts: p.contacts
       .map((c, index) => ({ c, index }))
-      .filter(({ c }) => c.visible && c.value)
+      // 有内容或上传了二维码，才在前台出现
+      .filter(({ c }) => c.visible && (!!c.value || !!c.qrcode))
       .map(({ c, index }) => ({
         index,
         type: c.type,
         label: c.label,
         display: mask(c),
-        reveal: c.reveal,
+        qrcode: c.qrcode ?? "",
+        reveal: c.reveal && !!c.value,
       })),
   };
 }

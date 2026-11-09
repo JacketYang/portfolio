@@ -25,7 +25,7 @@ export const defaultProfile: Profile = {
     { label: "成人高考报名", value: "1 万+ 人", note: "项目累计报名学员" },
   ],
   contacts: [
-    { type: "phone", label: "电话", value: "18172047240", reveal: true, visible: true },
+    { type: "phone", label: "电话", value: "18172047240", qrcode: "", reveal: true, visible: true },
   ],
   certificates: [
     "证券从业资格证",
