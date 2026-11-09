@@ -179,6 +179,7 @@ const contact = z
     type: z.enum(CONTACT_TYPES),
     label: str(30).min(1, "联系方式名称不能为空"),
     value: str(200),
+    qrcode: imgUrl.optional().default(""),
     reveal: z.boolean(),
     visible: z.boolean(),
   })

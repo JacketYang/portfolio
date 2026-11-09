@@ -96,6 +96,8 @@ export type Contact = {
   type: ContactType;
   label: string;
   value: string;
+  /** 二维码图片地址（微信 / QQ / 群码等）。留空则前台不显示。 */
+  qrcode?: string;
   reveal: boolean;
   visible: boolean;
 };
@@ -126,6 +128,8 @@ export type PublicContact = {
   type: ContactType;
   label: string;
   display: string;
+  /** 已上传的二维码图片地址；空字符串表示没有。 */
+  qrcode: string;
   reveal: boolean;
 };
 
